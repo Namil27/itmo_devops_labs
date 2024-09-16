@@ -13,6 +13,8 @@ services:
       - ./pet2:/pet2  # Подключение директории pet2 (если требуется)
     networks:
       - webnet
+    extra_hosts:
+      - "nelocalhost:127.0.0.1"
 
 networks:
   webnet:
