@@ -1,120 +1,19 @@
-version: '3.7'
+version: '3.8'
+
 services:
   nginx:
     build:
-      context: ./nginx
-    container_name: webserver
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - /ssl/ssl_stat/conf:/etc/letsencrypt
-      - /ssl/ssl_stat/www:/var/www/certbot
-      - icons:/app/static/icons
+      context: ./nginx  # Путь к папке, где находится Dockerfile и nginx.conf
+    container_name: nginx_server
     ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - flaskapp
+      - "80:80"  # Проброс порта 80 хоста на порт 80 контейнера
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d  # Если есть файлы конфигураций для виртуальных хостов
+      - ./pet1:/pet1  # Подключение директории pet1
+      - ./pet2:/pet2  # Подключение директории pet2 (если требуется)
     networks:
       - webnet
-    restart: always
-  certbot:
-    build:
-      context: ./certbot
-    container_name: certbot
-    volumes:
-      - /ssl/ssl_stat/conf:/etc/letsencrypt
-      - /ssl/ssl_stat/www:/var/www/certbot
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    entrypoint: /bin/sh -c "certbot renew --webroot -w /var/www/certbot"
-    networks:
-      - webnet
-  timescaledb:
-    image: timescale/timescaledb:latest-pg16
-    container_name: timescaledb
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: i@eS*gs@4fSwBg\
-      POSTGRES_USER: postgres
-      POSTGRES_DB: liveinternet
-    volumes:
-      - db:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    restart: unless-stopped
-  backup:
-    build:
-      context: ./backup
-    environment:
-      DB_NAME: liveinternet
-      DB_USER: postgres
-      DB_HOST: timescaledb
-      DB_PORT: 5432
-      DB_PASSWORD: i@eS*gs@4fSwBg\
-      ACCESS_KEY: 8d60cfe20c56444bbaad3ddb4a6e9428
-      SECRET_KEY: cacbd1cbbe914f9da69a970e374ec968
-    volumes:
-      - backup-data:/backup-data
-    depends_on:
-      - timescaledb
-    deploy:
-      restart_policy:
-        condition: on-failure
-  fastapiapp:
-    build: ./api
-    container_name: liveinternet_api
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./api:/app
-      - shared_data:/app/data
-    depends_on:
-      - timescaledb
-    restart: unless-stopped
-    environment:
-      DB_HOST: timescaledb
-      DB_PORT: 5432
-      DB_USER: api
-      DB_PASSWORD: super_hard_password
-      DB_NAME: liveinternet
-    command: uvicorn main:app --host 0.0.0.0 --port 8000
-  parser:
-    build: ./parser
-    container_name: liveinternet_parser
-    volumes:
-      - ./parser:/app
-      - shared_data:/app/data
-      - icons:/app/icons
-    depends_on:
-      - timescaledb
-    restart: unless-stopped
-    environment:
-      DB_HOST: timescaledb
-      DB_PORT: 5432
-      DB_USER: parser
-      DB_PASSWORD: mega_hard_password_qwerty
-      DB_NAME: liveinternet
-    command: [ "/bin/bash", "/app/start.sh" ]
-  flaskapp:
-    build: ./web
-    container_name: liveinternet_web
-    ports:
-      - "5000:5000"
-    environment:
-      FLASK_ENV: development
-      FLASK_APP: app.py
-    volumes:
-      - ./web:/app
-      - icons:/app/static/icons
-    depends_on:
-      - fastapiapp
-    command: flask run --host=0.0.0.0
-    networks:
-      - webnet
-volumes:
-  db:
-  shared_data:
-  icons:
-  backup-data:
+
 networks:
   webnet:
     driver: bridge
