@@ -4,6 +4,8 @@ FROM nginx:latest
 # Копируем файл конфигурации Nginx в контейнер
 COPY nginx.conf /etc/nginx/nginx.conf
 
+RUN mkdir /etc/keys -p
+
 # Указываем рабочую директорию
 WORKDIR /usr/share/nginx/text
 

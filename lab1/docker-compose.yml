@@ -7,8 +7,10 @@ services:
     container_name: nginx_server
     ports:
       - "80:80"  # Проброс порта 80 хоста на порт 80 контейнера
+      - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d  # Если есть файлы конфигураций для виртуальных хостов
+      - ./nginx/keys:/etc/keys
       - ./pet1:/pet1  # Подключение директории pet1
       - ./pet2:/pet2  # Подключение директории pet2 (если требуется)
     networks:
