@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  app:
+    image: myapp:latest
+    ports:
+      - "8080:80"  # Используем нестандартный внешний порт для повышения безопасности.
+    environment:
+      - DEBUG=false  # Отключение режима отладки в production.
+    volumes:
+      - app-data:/usr/src/app  # Использование Docker тома для данных приложения.
+
+volumes:
+  app-data:  # Определяем том для хранения данных.
