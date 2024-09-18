@@ -1,6 +1,6 @@
 import unittest
 from datetime import date
-from ..app import get_current_date
+from lab3.flaskapp.app import get_current_date
 
 
 class TestGetCurrentDate(unittest.TestCase):
