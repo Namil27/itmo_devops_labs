@@ -1,6 +1,10 @@
 import unittest
-from datetime import date
-from app.app import get_current_date
+from datetime import date, datetime
+
+
+def get_current_date():
+    current_date = datetime.now().date()
+    return current_date
 
 
 class TestGetCurrentDate(unittest.TestCase):
