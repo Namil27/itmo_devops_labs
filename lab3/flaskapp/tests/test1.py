@@ -1,6 +1,6 @@
 import unittest
 from datetime import date
-from ..app import get_current_date  # замените 'your_module' на имя вашего модуля
+from ..app import get_current_date
 
 
 class TestGetCurrentDate(unittest.TestCase):
