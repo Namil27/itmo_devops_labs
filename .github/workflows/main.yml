@@ -35,8 +35,8 @@ jobs:
           # Запуск тестов для Flask-приложения
       - name: Run tests
         run: |
-          cd lab1  # Переход в директорию с docker-compose.yml
-          docker-compose exec flaskapp pytest  # Запуск тестов внутри контейнера
+          cd lab3  # Переход в директорию с docker-compose.yml
+          docker-compose exec -T flaskapp pytest  # Запуск тестов внутри контейнера
 
   deploy:
     runs-on: ubuntu-latest

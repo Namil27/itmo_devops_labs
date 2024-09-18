@@ -1,0 +1,59 @@
+name: Лучшие практики для CI/CD с Flask и Nginx через Docker Compose
+
+on:
+  push:
+    branches:
+      - main  # Запускаем pipeline при пуше только в основную ветку.
+  pull_request:
+    branches:
+      - main  # Запускаем при создании PR в основную ветку.
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Используем определённые версии сервисов для стабильности окружения
+      - name: Build and run services
+        run: |
+          docker-compose -f ./lab3/docker-compose.yml up -d --build
+
+      # Запускаем тесты внутри контейнера
+      - name: Run tests
+        run: |
+          cd lab3
+          docker-compose exec -T flaskapp pytest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test  # Выполняем деплой только после успешного завершения тестов.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Остановка текущих контейнеров перед деплоем
+      - name: Deploy application
+        run: |
+          cd ./lab3
+          docker-compose down  # Останавливаем существующие контейнеры.
+          docker-compose up -d --build  # Собираем и запускаем новые контейнеры.
