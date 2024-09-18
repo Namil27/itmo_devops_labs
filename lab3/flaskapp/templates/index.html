@@ -8,7 +8,6 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #1eb600;
             margin: 0;
             padding: 0;
         }
@@ -28,8 +27,8 @@
         }
     </style>
 </head>
-<body>
-    <h1>I LOVE DOTA 2</h1>
-    <img src="/russia" alt="Dota 2 Image">
+<body style="background-color: rgb({{ r }},{{ g }},{{ b }});">
+    <img src="{{ url_for('static', filename='russia.png') }}" alt="Dota 2 Image">
+    <h1>{{ date }}</h1>
 </body>
 </html>

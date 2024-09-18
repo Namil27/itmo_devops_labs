@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  flaskapp:
+    build: flaskapp
+    container_name: flaskapp
+    ports:
+      - "8000:8000"  # Открываем порт для Flask
+    command: flask run --host=0.0.0.0 --port=8000
+    networks:
+      - webnet
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"  # Nginx будет слушать на порту 80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - flaskapp
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge

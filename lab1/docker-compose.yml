@@ -12,7 +12,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d  # Если есть файлы конфигураций для виртуальных хостов
       - ./nginx/keys:/etc/keys
       - ./pet1:/pet1  # Подключение директории pet1
-      - ./pet2:/pet2  # Подключение директории pet2 (если требуется)
+      - ./pet2:/pet2
     networks:
       - webnet
     extra_hosts:
