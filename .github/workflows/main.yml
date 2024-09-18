@@ -30,12 +30,12 @@ jobs:
       # Сборка контейнеров с помощью Docker Compose
       - name: Build and run services
         run: |
-          docker-compose up -d --build  # Собрать и запустить контейнеры в фоне
+          docker-compose -f ./lab1/docker-compose.yml up -d --build  # Собрать и запустить контейнеры в фоне
 
       # Запуск тестов для Flask-приложения
       - name: Run tests
         run: |
-          docker-compose exec flask-service pytest  # Замените flask-service на ваше имя контейнера Flask
+          docker-compose -f ./lab1/docker-compose.yml exec flask-service pytest  # Замените flask-service на ваше имя контейнера Flask
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,5 +58,5 @@ jobs:
       # Деплой приложения с помощью Docker Compose
       - name: Deploy application
         run: |
-          docker-compose down  # Остановить существующие контейнеры (если они есть)
-          docker-compose up -d --build  # Собрать и запустить контейнеры снова
+          docker-compose -f ./lab1/docker-compose.yml down  # Остановить существующие контейнеры (если они есть)
+          docker-compose -f ./lab1/docker-compose.yml up -d --build  # Собрать и запустить контейнеры снова
