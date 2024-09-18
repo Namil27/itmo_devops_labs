@@ -12,7 +12,21 @@
 
 ```nginx
 events {
-    worker_connections 1024;  # Максимальное количество соединений
+    worker_connections 1024;
+}
+
+# HTTP блок, где находятся server-блоки
+http {
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            root /pet1;
+            index text1.txt
+            try_files $uri $uri/ =404;
+        }
+    }
 }
 ```
 
@@ -57,7 +71,7 @@ openssl req -new -key nelocalhost.key -out nelocalhost.csr
 openssl x509 -req -days 365 -in nelocalhost.csr -signkey nelocalhost.key -out nelocalhost.crt
 ```
 
-6. **Настройка HTTPS и редиректа с HTTP:**В конфигурации Nginx были прописаны пути к SSL-сертификатам и добавлены блоки
+6. **Настройка HTTPS и редиректа с HTTP:** В конфигурации Nginx были прописаны пути к SSL-сертификатам и добавлены блоки
    для редиректа с HTTP на HTTPS:
 
 ```nginx configuration
