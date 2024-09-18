@@ -36,7 +36,7 @@ jobs:
       - name: Run tests
         run: |
           cd lab3  # Переход в директорию с docker-compose.yml
-          docker-compose exec flaskapp pytest  # Запуск тестов внутри контейнера
+          docker-compose exec -T flaskapp pytest  # Запуск тестов внутри контейнера
 
   deploy:
     runs-on: ubuntu-latest
