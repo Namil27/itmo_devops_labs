@@ -57,7 +57,7 @@ openssl req -new -key nelocalhost.key -out nelocalhost.csr
 openssl x509 -req -days 365 -in nelocalhost.csr -signkey nelocalhost.key -out nelocalhost.crt
 ```
 
-6. **Настройка HTTPS и редиректа с HTTP:**В конфигурации Nginx были прописаны пути к SSL-сертификатам и добавлены блоки
+6. **Настройка HTTPS и редиректа с HTTP:** В конфигурации Nginx были прописаны пути к SSL-сертификатам и добавлены блоки
    для редиректа с HTTP на HTTPS:
 
 ```nginx configuration
