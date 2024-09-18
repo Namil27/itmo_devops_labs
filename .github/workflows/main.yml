@@ -21,6 +21,12 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+      # Установка Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       # Сборка контейнеров с помощью Docker Compose
       - name: Build and run services
         run: |
@@ -42,6 +48,12 @@ jobs:
       # Установка Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
+
+      # Установка Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
       # Деплой приложения с помощью Docker Compose
       - name: Deploy application
