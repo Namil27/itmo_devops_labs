@@ -21,13 +21,6 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Логин в Docker Hub (если требуется для деплоя)
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}  # Добавьте свой username в secrets
-          password: ${{ secrets.DOCKER_PASSWORD }}  # Добавьте свой пароль в secrets
-
       # Сборка контейнеров с помощью Docker Compose
       - name: Build and run services
         run: |
