@@ -40,6 +40,79 @@
 - Изменили процесс деплоя на docker-compose up -d --build --no-deps для минимизации простоя.
 - Добавили кэширование зависимостей в тестах для ускорения выполнения тестов.
 
+### Запуск пайплайна
+
+```yaml
+name: CI/CD Pipeline for Flask and Nginx with Docker Compose
+
+on:
+  push:
+    branches:
+      - main  # Запускать pipeline при пуше в ветку main
+  pull_request:
+    branches:
+      - main  # Запускать при создании PR в ветку main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout кода из репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Установка Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # Установка Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Сборка контейнеров с помощью Docker Compose
+      - name: Build and run services
+        run: |
+          docker-compose -f ./lab3/docker-compose.yml up -d --build  # Собрать и запустить контейнеры в фоне
+
+          # Запуск тестов для Flask-приложения
+      - name: Run tests
+        run: |
+          cd lab3  # Переход в директорию с docker-compose.yml
+          docker-compose exec -T flaskapp pytest  # Запуск тестов внутри контейнера
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test  # Выполнить деплой только после успешного завершения тестов
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Установка Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # Установка Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Деплой приложения с помощью Docker Compose
+      - name: Deploy application
+        run: |
+          cd ./lab3  # Переход в директорию с docker-compose.yml
+          docker-compose down  # Остановить существующие контейнеры (если они есть)
+          docker-compose up -d --build  # Собрать и запустить контейнеры снова
+
+```
+
+![screenshot1.png](assets/screenshot1.png)
+![screenshot2.png](assets/screenshot2.png)
+
 #### Заключение
 
 Мы улучшили CI/CD пайплайн, сделав его более стабильным и эффективным. Исправления уменьшили время сборки и деплоя и снизили вероятность возникновения проблем, обеспечивая более быстрые и надежные результаты.
