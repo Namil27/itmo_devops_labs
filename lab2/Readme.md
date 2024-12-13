@@ -69,3 +69,42 @@ services:
 volumes:
   app-data:  # Определяем том для хранения данных.
 ```
+## Docker-compose с Best Practices и сетями
+
+ Сервисы приложения и базы данных изолированы на сетевом уровне с помощью раздельных сетей app-network и db-network. Это достигается использованием изолированных подсетей Docker, управляемых драйвером bridge. Такая конфигурация повышает безопасность, исключая возможность нежелательного взаимодействия между сервисами по сети.
+```
+version: '3'
+
+services:
+  app:
+    image: myapp:latest
+    ports:
+      - "8080:80"  # Используем нестандартный внешний порт для повышения безопасности.
+    environment:
+      - DEBUG=false  # Отключение режима отладки в production.
+    volumes:
+      - app-data:/usr/src/app  # Использование Docker тома для данных приложения.
+    networks:
+      - app-network  # Привязываем сервис к своей сети.
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data  # Храним данные БД в отдельном томе.
+    networks:
+      - db-network  # Привязываем сервис к отдельной сети.
+
+volumes:
+  app-data:  # Том для данных приложения.
+  db-data:  # Том для данных базы данных.
+
+networks:
+  app-network:  # Сеть для приложения.
+    driver: bridge
+  db-network:  # Сеть для базы данных.
+    driver: bridge
+
+```
