@@ -1,3 +1,6 @@
+### Отчет по ЛР1 по облакам:
+Табличка: https://docs.google.com/spreadsheets/d/1us31seuq2DoCNsbnjUgvjehHtLfNDIm_tmWYzo4Knlw/edit?usp=sharing
+
 ### **Общие**
 - **Additional Costs**: Дополнительные расходы
 
