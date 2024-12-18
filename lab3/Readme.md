@@ -55,6 +55,7 @@ on:
 
 jobs:
   build:
+      # Фиксированная версия убунты
     runs-on: ubuntu-22.04
 
     steps:
@@ -70,9 +71,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.run_id }}
+          key: ${{ runner.os }}-buildx
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-buildx
 
       # Деплой приложения с помощью Docker Compose
       - name: Deploy application
@@ -81,6 +82,7 @@ jobs:
           docker compose up -d --build  # Собрать и запустить контейнеры
 
   test:
+      # Фиксированная версия убунты
     runs-on: ubuntu-22.04
     needs: build # Выполнить test только после успешного завершения build
 
