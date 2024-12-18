@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+      # Фиксированная версия убунты
     runs-on: ubuntu-22.04
 
     steps:
@@ -36,6 +37,7 @@ jobs:
           docker compose up -d --build  # Собрать и запустить контейнеры
 
   test:
+      # Фиксированная версия убунты
     runs-on: ubuntu-22.04
     needs: build # Выполнить test только после успешного завершения build
 
