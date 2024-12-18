@@ -12,15 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-22.04
 
-    steps:
+ steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Установка Docker
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      # Кэширование Docker образов
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -29,11 +24,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx
 
-      # Деплой приложения с помощью Docker Compose
-      - name: Deploy application
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
         run: |
-          cd ./lab3  # Переход в директорию с docker-compose.yml
-          docker compose up -d --build  # Собрать и запустить контейнеры
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --tag my-image:latest .
 
   test:
     runs-on: ubuntu-22.04
