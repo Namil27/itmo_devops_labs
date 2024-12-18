@@ -20,50 +20,49 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Кэширование Docker образов
+      # Настройка кэширования для сборки Docker-образов
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.run_id }}
+          path: /tmp/.buildx-cache  # Путь для сохранения кэша
+          key: ${{ runner.os }}-docker-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-docker-
 
       # Деплой приложения с помощью Docker Compose
       - name: Deploy application
         run: |
           cd ./lab3  # Переход в директорию с docker-compose.yml
-          docker compose up -d --build  # Собрать и запустить контейнеры
+          docker buildx create --use  # Создать и использовать Buildx
+          docker compose build --progress=plain --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache
+          docker compose up -d  # Запуск контейнеров
 
   test:
     runs-on: ubuntu-22.04
     needs: build # Выполнить test только после успешного завершения build
 
     steps:
-      # Checkout кода из репозитория
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Установка Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Кэширование Docker образов
+      # Настройка кэширования для тестирования
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.run_id }}
+          path: /tmp/.buildx-cache  # Путь для сохранения кэша
+          key: ${{ runner.os }}-docker-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-docker-
 
-      # Сборка контейнеров с помощью Docker Compose
       - name: Build and run services
         run: |
-          docker compose -f ./lab3/docker-compose.yml up -d --build  # Собрать и запустить контейнеры в фоне
+          docker compose -f ./lab3/docker-compose.yml build --progress=plain --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache
+          docker compose up -d  # Запуск контейнеров
 
-      # Запуск тестов для Flask-приложения
       - name: Run tests
         run: |
-          cd lab3  # Переход в директорию с docker-compose.yml
+          cd lab3
           docker compose exec -T flaskapp pytest  # Запуск тестов внутри контейнера
