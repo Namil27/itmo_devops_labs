@@ -54,8 +54,35 @@ on:
       - main  # Запускать при создании PR в ветку main
 
 jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Установка Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # Кэширование Docker образов
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # Деплой приложения с помощью Docker Compose
+      - name: Deploy application
+        run: |
+          cd ./lab3  # Переход в директорию с docker-compose.yml
+          docker compose up -d --build  # Собрать и запустить контейнеры
+
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    needs: build # Выполнить test только после успешного завершения build
 
     steps:
       # Checkout кода из репозитория
@@ -66,53 +93,32 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Установка Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      # Кэширование Docker образов
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
       # Сборка контейнеров с помощью Docker Compose
       - name: Build and run services
         run: |
-          docker-compose -f ./lab3/docker-compose.yml up -d --build  # Собрать и запустить контейнеры в фоне
+          docker compose -f ./lab3/docker-compose.yml up -d --build  # Собрать и запустить контейнеры в фоне
 
-          # Запуск тестов для Flask-приложения
+      # Запуск тестов для Flask-приложения
       - name: Run tests
         run: |
           cd lab3  # Переход в директорию с docker-compose.yml
-          docker-compose exec -T flaskapp pytest  # Запуск тестов внутри контейнера
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test  # Выполнить деплой только после успешного завершения тестов
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Установка Docker
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      # Установка Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-
-      # Деплой приложения с помощью Docker Compose
-      - name: Deploy application
-        run: |
-          cd ./lab3  # Переход в директорию с docker-compose.yml
-          docker-compose down  # Остановить существующие контейнеры (если они есть)
-          docker-compose up -d --build  # Собрать и запустить контейнеры снова
+          docker compose exec -T flaskapp pytest  # Запуск тестов внутри контейнера
 
 ```
 
 ![screenshot1.png](assets/screenshot1.png)
 ![screenshot2.png](assets/screenshot2.png)
+![screenshot3.png](assets/screenshot3.png)
 
 #### Заключение
 
-Мы улучшили CI/CD пайплайн, сделав его более стабильным и эффективным. Исправления уменьшили время сборки и деплоя и снизили вероятность возникновения проблем, обеспечивая более быстрые и надежные результаты.
+Мы улучшили CI/CD пайплайн, сделав его более стабильным и эффективным, добавили кеширование, не используем дополнительную утилиту docker-compose. Исправления уменьшили время сборки и деплоя и снизили вероятность возникновения проблем, обеспечивая более быстрые и надежные результаты.
