@@ -25,9 +25,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.run_id }}
+          key: ${{ runner.os }}-buildx
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-buildx
 
       # Деплой приложения с помощью Docker Compose
       - name: Deploy application
