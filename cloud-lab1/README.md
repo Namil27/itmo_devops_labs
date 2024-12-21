@@ -28,83 +28,83 @@
 
 - **Additional Costs**: Дополнительные расходы
 
-### **Amazon Partner Network Fee**
-
+### **Amazon Partner Network Fee** 
+Комиссия для партнеров Amazon.
 - **Partner Network Fee**: Плата за участие в партнерской сети Amazon.
 
 ### **Amazon App Stream**
-
+Потоковая передача приложений через браузер.
 - **Streaming**: Сервис для стриминга приложений и рабочих столов из облака.
 - **Stopped Instance**: Стоимость остановленных экземпляров в AppStream.
 - **Windows User Access**: Доступ к Windows-приложениям через AppStream.
 
 ### **Amazon Athena**
-
+Анализ данных в S3 с SQL.
 - **Interactive Queries**: Сервис для анализа данных в S3 с помощью SQL запросов.
 - **Query Services**: Сервис для обработки больших объемов данных в S3 с помощью SQL запросов.
 
 ### **Amazon Cloud Directory**
-
+Управление облачными директориями и данными.
 - **Directory Services**: Сервис для управления каталогами данных.
 
 ### **Amazon Document Database**
-
+NoSQL база данных для документов.
 - **Database Instance**: Сервис для создания и управления экземплярами Amazon DocumentDB.
 - **Database Storage I/O**: Операции ввода-вывода в DocumentDB.
 - **Database Storage**: Хранилище DocumentDB.
 - **Database Backup Storage**: Бэкапы DocumentDB.
 
 ### **Amazon Elastic Inference**
-
+Ускорение работы ИИ-моделей.
 - **Elastic Inference Accelerator**: Сервис для ускорения ML.
 
 ### **AWS IoT**
-
+Платформа для подключения IoT-устройств.
 - **SMS Messaging**: Сервис для отправки смсок внутри IoT.
 - **Registry and Shadow Operations**: Управление реестром устройств и их тенями.
 - **Connection Management**: Управление соединениями между IoT и облаком.
 - **MQTT Protocol**: MQTT протокол для IoT.
 
 ### **IoT Device Management**
-
+Управление подключенными IoT-устройствами.
 - **Data Indexing**: Индексирование данных IoT.
 
 ### **AWS CodePipeline**
-
+Автоматизация процессов CI/CD.
 - **Pipeline Trial**: Триал пайплайнов для CI/CD.
 - **Pipeline Active**: Активная версия CI/CD.
 
 ### **AWS X-Ray**
-
+Анализ производительности приложений.
 - **Tracing Data Collection**: Сервис для сбора и анализа данных производительности приложений.
 
 ### **CodeBuild**
-
+Автоматическая сборка и тестирование кода.
 - **Build and Compilation**: Сервис для сборки и компиляции кода, вместе с другими инструментами AWS.
 
 ### **Amazon Machine Learning**
-
+Создание моделей машинного обучения.
 - **Data Statistics**: Сервис для дата-анализа данных для ML.
 - **Batch Predictions**: Платформа для обработки и получения предсказаний с помощью ИИ.
 - **Model Training**: Сервис для машинного обучения.
 - **Model Evaluation**: Сервис для анализа качества обученной модели.
 
 ### **Amazon Polly**
-
+Синтез речи из текста.
 - **Text to Speech**: Иишка для преобразования текста в речь.
 
 ### **Amazon Personalize**
-
+Персонализированные рекомендации.
 - **Set Throughput**: Настройка пропускной способности для персонализации рекомендаций.
 - **Model Training**: Платформа для обучения моделей Amazon Personalize.
 - **Data Ingestion**: Загрузка данных в систему Amazon Personalize.
 
 ### **Amazon Rekognition**
-
+Анализ изображений и видео.
 - **Data Index**: Сервис для индексирования медиа и анализа с помощью машинного зрения.
 
 ### **Amazon Elastic Compute Cloud (EC2)**
-
+Аренда серверов для вычислений.
 - **IOPS Services**: Сервис для работы с I/O-bound операциями на блоковых устройствах EC2.
 - **Volume Services**: Управление вольюмами, которые прикреплены к экземплярам EC2.
 - **Snapshot Services**: Сервис для создания и восстановления снапшотов EC2.
