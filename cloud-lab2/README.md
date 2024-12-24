@@ -47,7 +47,7 @@
 14. Azure Monitor — мониторинг телеметрии.
 15. Azure SignalR — добавление риалтайм функций в веб-приложения.
 16. Azure Site Recovery — аварийное восстановление.
-17. Azure Virtual Machines — ВМки для запуска приложений.
+17. Azure Virtual Machines — ВМки для запуска приложений под разные задачи.
 18. Azure Virtual Network — изолированные сети.
 
 ---
